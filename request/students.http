@@ -1,0 +1,15 @@
+DELETE https://crudcrud.com/api/9e3e34f1c5aa4498958a1dce6c0295e8/student/682b8f23fecf4003e8928ece
+Accept: application/json
+
+###
+GET https://crudcrud.com/api/9e3e34f1c5aa4498958a1dce6c0295e8/student/682b8f23fecf4003e8928ece
+Accept: application/json
+
+###
+POST https://crudcrud.com/api/9e3e34f1c5aa4498958a1dce6c0295e8/student
+Content-Type: application/json
+
+{
+  "name": "Саша Осипов",
+  "grade" : 2
+}
