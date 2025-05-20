@@ -5,6 +5,7 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import org.apache.http.HttpStatus;
 import org.example.api.StudentRequests;
+import org.example.api.models.Student;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasKey;
 
 public class SimpleTest {
+
 
     @BeforeAll
     public static void setupTests() {
@@ -22,22 +24,30 @@ public class SimpleTest {
 
     @Test
     public void userShouldBeAbleCreateStudent() {
-        // given - when - then
-        StudentRequests.createStudent("{\n" +
-                "  \"name\": \"Саша Осипов\",\n" +
-                "  \"grade\" : 2\n" +
-                "}");
+        // Student student = new Student("Саша Осипов", 2, "");
+        Student student = Student
+                .builder()
+                .name("Саша Осипов")
+                .grade(2)
+                .build();
+
+        Student createStudent = StudentRequests.createStudent(student);
     }
 
     @Test
     public void userShouldBeAbleDeleteExistingStudent() {
-        String id = StudentRequests.createStudent("{\n" +
-                "  \"name\": \"Саша Осипов\",\n" +
-                "  \"grade\" : 2\n" +
-                "}");
-        StudentRequests.deleteStudent(id);
+        Student student = Student
+                .builder()
+                .name("Саша Осипов")
+                .grade(2)
+                .build();
+
+        Student createStudent = StudentRequests.createStudent(student);
+
+        StudentRequests.deleteStudent(createStudent.getId());
+
         given()
-                .get("/student/" + id)
+                .get("/student/" + createStudent.getId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
